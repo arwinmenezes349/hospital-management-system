@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 24px 36px;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #0f766e;
+        }
+
+        .card p {
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 16px;
+            background: #0f766e;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-top: 5px;
+        }
+
+        .button:hover {
+            background: #115e59;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 22px 20px;
+            }
+
+            header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Hospital Management System</h1>
+    <p>Manage patients and doctors efficiently</p>
+</header>
+
+<main>
+    <section class="welcome">
+        <h2>Dashboard</h2>
+        <p>Welcome to the Hospital Management System.</p>
+    </section>
+
+    <section class="cards">
+
+        <div class="card">
+            <h2>Patients</h2>
+            <p>Register, view and manage patient information.</p>
+            <a class="button" th:href="@{/patients}">
+                View Patients
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>Doctors</h2>
+            <p>View doctor details and medical specializations.</p>
+            <a class="button" th:href="@{/doctors}">
+                View Doctors
+            </a>
+        </div>
+
+        <div class="card">
+            <h2>Appointments</h2>
+            <p>Access hospital appointment management.</p>
+            <a class="button" th:href="@{/appointments}">
+                View Appointments
+            </a>
+        </div>
+
+    </section>
+</main>
+
+<footer>
+    Hospital Management System | Academic Project
+</footer>
+
+</body>
+</html>
+```

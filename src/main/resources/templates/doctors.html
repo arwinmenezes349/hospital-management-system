@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Management</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 25px 40px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+            overflow-x: auto;
+        }
+
+        h2 { color: #0f766e; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th { background: #e2e8f0; }
+
+        a { color: #0f766e; }
+
+        .empty { color: #64748b; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Doctor Management</h1>
+    <p>Hospital Management System</p>
+</header>
+
+<main>
+    <section class="panel">
+        <h2>Registered Doctors</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Specialization</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="doctor : ${doctors}">
+                    <td th:text="${doctor.id}"></td>
+                    <td th:text="${doctor.name}"></td>
+                    <td th:text="${doctor.specialization}"></td>
+                    <td th:text="${doctor.email}"></td>
+                    <td th:text="${doctor.phone}"></td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(doctors)}">
+                    <td colspan="5" class="empty">
+                        No doctors registered yet.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><a href="/">Back to Dashboard</a></p>
+    </section>
+</main>
+
+</body>
+</html>

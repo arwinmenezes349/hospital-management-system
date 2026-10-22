@@ -1,0 +1,292 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Appointment Management</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 25px 35px;
+        }
+
+        header h1 {
+            margin: 0 0 10px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        main {
+            max-width: 1150px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .panel {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        h2 {
+            color: #0f766e;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            outline: 2px solid #99f6e4;
+            border-color: #0f766e;
+        }
+
+        button {
+            margin-top: 22px;
+            padding: 12px 20px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #115e59;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+
+        th,
+        td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background: #e2e8f0;
+        }
+
+        .empty {
+            padding: 18px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            color: #64748b;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0f766e;
+        }
+
+        .back-link:hover {
+            color: #115e59;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 22px;
+            }
+
+            .panel {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Appointment Management</h1>
+    <p>Hospital Management System</p>
+</header>
+
+<main>
+
+    <!-- Book an appointment -->
+    <section class="panel">
+
+        <h2>Book an Appointment</h2>
+
+        <div class="success"
+             th:if="${message != null}"
+             th:text="${message}">
+            Appointment booked successfully!
+        </div>
+
+        <form th:action="@{/appointments}"
+              th:object="${appointment}"
+              method="post">
+
+            <!-- Patient dropdown -->
+            <label for="patientName">Select Patient</label>
+
+            <select id="patientName"
+                    th:field="*{patientName}"
+                    required>
+
+                <option value="">Choose a patient</option>
+
+                <option th:each="p : ${patients}"
+                        th:value="${p.name}"
+                        th:text="${p.name}">
+                </option>
+
+            </select>
+
+            <!-- Doctor dropdown -->
+            <label for="doctorName">Select Doctor</label>
+
+            <select id="doctorName"
+                    th:field="*{doctorName}"
+                    required>
+
+                <option value="">Choose a doctor</option>
+
+                <option th:each="d : ${doctors}"
+                        th:value="${d.name}"
+                        th:text="${d.name}">
+                </option>
+
+            </select>
+
+            <!-- Appointment date -->
+            <label for="appointmentDate">Appointment Date</label>
+
+            <input type="date"
+                   id="appointmentDate"
+                   th:field="*{appointmentDate}"
+                   required>
+
+            <!-- Appointment time -->
+            <label for="appointmentTime">Appointment Time</label>
+
+            <input type="time"
+                   id="appointmentTime"
+                   th:field="*{appointmentTime}"
+                   required>
+
+            <!-- Reason -->
+            <label for="reason">Reason for Visit</label>
+
+            <input type="text"
+                   id="reason"
+                   th:field="*{reason}"
+                   placeholder="Enter reason for appointment"
+                   required>
+
+            <button type="submit">Book Appointment</button>
+
+        </form>
+
+    </section>
+
+    <!-- Registered appointments -->
+    <section class="panel">
+
+        <h2>Registered Appointments</h2>
+
+        <div class="table-container"
+             th:if="${not #lists.isEmpty(appointments)}">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr th:each="item : ${appointments}">
+                        <td th:text="${item.id}"></td>
+                        <td th:text="${item.patientName}"></td>
+                        <td th:text="${item.doctorName}"></td>
+                        <td th:text="${item.appointmentDate}"></td>
+                        <td th:text="${item.appointmentTime}"></td>
+                        <td th:text="${item.reason}"></td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p class="empty"
+           th:if="${#lists.isEmpty(appointments)}">
+            No appointments booked yet. Use the form above to book one.
+        </p>
+
+        <a class="back-link" th:href="@{/}">
+            ← Back to Dashboard
+        </a>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,0 +1,175 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Management</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #0f766e;
+            color: white;
+            padding: 25px 35px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px #0000000d;
+        }
+
+        h2 { color: #0f766e; }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+        }
+
+        button, .btn {
+            background: #0f766e;
+            color: white;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .delete { background: #dc2626; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th { background: #e2e8f0; }
+
+        .message {
+            background: #dcfce7;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .table-wrapper { overflow-x: auto; }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>Patient Management</h1>
+    <p>Hospital Management System</p>
+</header>
+
+<main>
+    <p><a href="/" class="btn">Back to Dashboard</a></p>
+
+    <div class="card">
+        <h2>Register New Patient</h2>
+
+        <p class="message"
+           th:if="${message}"
+           th:text="${message}"></p>
+
+        <form th:action="@{/patients}"
+              th:object="${patient}" method="post">
+
+            <label>Patient Name</label>
+            <input type="text" th:field="*{name}"
+                   placeholder="Enter full name" required>
+
+            <label>Age</label>
+            <input type="number" th:field="*{age}"
+                   min="0" max="130" required>
+
+            <label>Gender</label>
+            <select th:field="*{gender}" required>
+                <option value="">Select gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label>Phone</label>
+            <input type="tel" th:field="*{phone}"
+                   placeholder="Enter phone number" required>
+
+            <label>Disease / Health Concern</label>
+            <input type="text" th:field="*{disease}"
+                   placeholder="Enter health concern" required>
+
+            <button type="submit">Register Patient</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Registered Patients</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Phone</th>
+                        <th>Disease</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="p : ${patients}">
+                        <td th:text="${p.id}"></td>
+                        <td th:text="${p.name}"></td>
+                        <td th:text="${p.age}"></td>
+                        <td th:text="${p.gender}"></td>
+                        <td th:text="${p.phone}"></td>
+                        <td th:text="${p.disease}"></td>
+                        <td>
+                            <form th:action="@{/patients/delete/{id}(id=${p.id})}"
+                                  method="post"
+                                  onsubmit="return confirm('Delete this patient?');">
+                                <button type="submit" class="delete">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(patients)}">
+                        <td colspan="7">No patients registered yet.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>
